@@ -5,20 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Ponto Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /* Estilo para o fundo com a imagem */
+        body {
+            background-image: url('/login-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Inter', sans-serif; /* Exemplo de fonte moderna */
+        }
+        /* Estilo para os campos de input rosa */
+        .input-field {
+            background-color: #F8A1A3; /* Rosa claro */
+            color: white;
+            border: none;
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .input-icon {
+            color: white;
+        }
+        /* Estilo para o botão roxo */
+        .login-button {
+            background-color: #6C4F97; /* Roxo escuro */
+        }
+        .login-button:hover {
+            background-color: #5A3E85;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 class="text-2xl font-bold mb-6 text-center text-blue-600">Ponto Eletrônico - Login</h1>
+<body class="h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-[30px] shadow-2xl w-96 text-center relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#6C4F97] to-[#F8A1A3] -z-10 rounded-t-[30px] opacity-90"></div>
+        
+        <h1 class="text-3xl font-bold mb-8 text-gray-800 mt-32">Login</h1>
+        
         <form action="/login" method="POST">
-            <div class="mb-4">
-                <label class="block text-gray-700">Email</label>
-                <input type="email" name="email" class="w-full p-2 border rounded mt-1" required>
+            <div class="mb-4 relative">
+                <span class="absolute left-4 top-3 input-icon">
+                    <i class="fas fa-user"></i>
+                </span>
+                <input type="email" name="email" placeholder="Username" class="w-full p-3 pl-12 rounded-full input-field focus:outline-none" required>
             </div>
-            <div class="mb-6">
-                <label class="block text-gray-700">Senha</label>
-                <input type="password" name="password" class="w-full p-2 border rounded mt-1" required>
+            <div class="mb-6 relative">
+                <span class="absolute left-4 top-3 input-icon">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <input type="password" name="password" placeholder="Password" class="w-full p-3 pl-12 rounded-full input-field focus:outline-none" required>
             </div>
-            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Entrar</button>
+            
+            <div class="flex justify-between items-center text-sm text-gray-500 mb-6 px-2">
+                <label class="flex items-center">
+                    <input type="checkbox" class="mr-2 rounded text-[#6C4F97] focus:ring-[#6C4F97]"> remember me
+                </label>
+                <a href="#" class="hover:text-[#6C4F97]">forgot password</a>
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-full text-white font-bold login-button transition-colors">Login</button>
+            
+            <div class="mt-6 text-sm text-gray-500">
+                <a href="#" class="hover:text-[#6C4F97]">Create Account</a>
+            </div>
         </form>
     </div>
 </body>
