@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Ponto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-md mx-auto min-h-screen flex flex-col p-4">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-xl font-bold text-gray-800">Olá, <%= user.name %></h2>
+                <p class="text-sm text-gray-500"><%= moment().format('DD/MM/YYYY') %></p>
+            </div>
+            <a href="/" class="text-red-500 text-sm">Sair</a>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-8 text-center">
+            <p class="text-gray-500 text-sm uppercase tracking-wide">Último Registro</p>
+            <% if (lastLog) { %>
+                <h1 class="text-3xl font-bold text-gray-800 my-2"><%= moment(lastLog.timestamp).format('HH:mm') %></h1>
+                <span class="px-3 py-1 rounded-full text-sm font-semibold 
+                    <%= lastLog.type === 'ENTRADA' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' %>">
+                    <%= lastLog.type %>
+                </span>
+            <% } else { %>
+                <h1 class="text-xl font-bold text-gray-400 my-4">Sem registros hoje</h1>
+            <% } %>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <form action="/registrar" method="POST" class="col-span-2">
+                <input type="hidden" name="userId" value="<%= user.id %>">
+                <input type="hidden" name="type" value="ENTRADA">
+                <button class="w-full bg-green-500 hover:bg-green-600 text-white h-24 rounded-xl text-xl font-bold shadow-lg flex flex-col items-center justify-center transition transform active:scale-95">
+                    <span>📍 ENTRADA</span>
+                    <span class="text-xs font-normal opacity-80 mt-1">Iniciar jornada</span>
+                </button>
+            </form>
+
+            <form action="/registrar" method="POST">
+                <input type="hidden" name="userId" value="<%= user.id %>">
+                <input type="hidden" name="type" value="INTERVALO_IDA">
+                <button class="w-full bg-yellow-500 text-white h-20 rounded-xl font-bold shadow-md active:scale-95">
+                    ☕ Pausa
+                </button>
+            </form>
+
+            <form action="/registrar" method="POST">
+                <input type="hidden" name="userId" value="<%= user.id %>">
+                <input type="hidden" name="type" value="INTERVALO_VOLTA">
+                <button class="w-full bg-yellow-600 text-white h-20 rounded-xl font-bold shadow-md active:scale-95">
+                    🔙 Voltar
+                </button>
+            </form>
+
+            <form action="/registrar" method="POST" class="col-span-2">
+                <input type="hidden" name="userId" value="<%= user.id %>">
+                <input type="hidden" name="type" value="SAIDA">
+                <button class="w-full bg-red-500 hover:bg-red-600 text-white h-24 rounded-xl text-xl font-bold shadow-lg flex flex-col items-center justify-center transition transform active:scale-95">
+                    <span>🏠 SAÍDA</span>
+                    <span class="text-xs font-normal opacity-80 mt-1">Encerrar jornada</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
