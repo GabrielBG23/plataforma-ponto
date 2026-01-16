@@ -11,7 +11,7 @@
         <div class="flex justify-between items-center mb-8">
             <div>
                 <h2 class="text-xl font-bold text-gray-800">Olá, <%= user.name %></h2>
-                <p class="text-sm text-gray-500"><%= moment().format('DD/MM/YYYY') %></p>
+                <p class="text-sm text-gray-500"><%= moment().tz('America/Sao_Paulo').format('DD/MM/YYYY') %></p>
             </div>
             <a href="/" class="text-red-500 text-sm">Sair</a>
         </div>
@@ -19,7 +19,9 @@
         <div class="bg-white p-6 rounded-xl shadow-sm mb-8 text-center">
             <p class="text-gray-500 text-sm uppercase tracking-wide">Último Registro</p>
             <% if (lastLog) { %>
-                <h1 class="text-3xl font-bold text-gray-800 my-2"><%= moment(lastLog.timestamp).format('HH:mm') %></h1>
+                <h1 class="text-3xl font-bold text-gray-800 my-2">
+                    <%= moment.utc(lastLog.timestamp).tz('America/Sao_Paulo').format('HH:mm') %>
+                </h1>
                 <span class="px-3 py-1 rounded-full text-sm font-semibold 
                     <%= lastLog.type === 'ENTRADA' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' %>">
                     <%= lastLog.type %>
