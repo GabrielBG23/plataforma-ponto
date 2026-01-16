@@ -3,7 +3,11 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const path = require('path');
-const moment = require('moment');
+
+// --- CORREÇÃO DE HORÁRIO AQUI ---
+// Usamos o moment-timezone para forçar o horário de Brasília/SP
+const moment = require('moment-timezone');
+moment.tz.setDefault('America/Sao_Paulo');
 
 const app = express();
 
@@ -41,7 +45,6 @@ app.get('/', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     
-    // ATENÇÃO: Em produção, lembre-se de usar hash nas senhas!
     const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
     
     db.query(query, [email, password], (err, results) => {
@@ -74,6 +77,7 @@ app.get('/bater-ponto', (req, res) => {
         // Busca o último registro para mostrar status
         db.query('SELECT * FROM time_logs WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1', [userId], (err, logs) => {
             const lastLog = logs && logs.length > 0 ? logs[0] : null;
+            // Passamos o 'moment' para a view, já configurado com o fuso horário correto
             res.render('employee', { user: users[0], lastLog, moment });
         });
     });
@@ -91,7 +95,7 @@ app.post('/registrar', (req, res) => {
     });
 });
 
-// --- ÁREA ADMINISTRATIVA (COM NOVAS FUNÇÕES) ---
+// --- ÁREA ADMINISTRATIVA ---
 
 // 5. Dashboard Admin (Listagem)
 app.get('/admin', (req, res) => {
@@ -162,11 +166,11 @@ app.get('/exportar', (req, res) => {
         
         // Linhas do CSV
         logs.forEach(log => {
+            // O moment aqui já vai formatar com o horário de SP (-3h)
             const dataHora = moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss');
             csv += `${log.name},${log.type},${dataHora},${log.ip_address}\n`;
         });
 
-        // Força o download no navegador
         res.header('Content-Type', 'text/csv');
         res.attachment('relatorio_ponto.csv');
         return res.send(csv);
